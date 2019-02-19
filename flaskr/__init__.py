@@ -1,5 +1,6 @@
 # coding=utf-8
 from flask import Flask
+from flask import render_template
 
 import os
 
@@ -32,8 +33,10 @@ def create_app(test_config=None):
 
     # 绑定函数到url
     @app.route('/')
+    @app.route('/index')
     def index():
-        return 'Index Page'
+        user = {'username': 'LEO'}
+        return render_template('index.html', title='Home', user=user)
 
     @app.route('/hello')
     def hello():
