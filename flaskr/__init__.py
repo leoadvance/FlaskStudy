@@ -1,5 +1,5 @@
 # coding=utf-8
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask import render_template
 
 import os
@@ -37,7 +37,7 @@ def create_app(test_config=None):
     def index():
         user = {'username': 'LEO'}
         return render_template('index.html', title='Home', user=user)
-
+    # 限定只能是int型
     @app.route('/blog/<int:postID>')
     def show_blog(postID):
         return 'Blog Number %d' % postID
@@ -45,5 +45,21 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return 'Hello, LEO!'
-        
+
+    # 重定向
+    @app.route('/admin')
+    def hello_admin():
+        return 'Hello Admin'
+
+    @app.route('/guest/<guest>')
+    def hello_guest(guest):
+        return 'Hello %s as Guest' % guest
+
+    @app.route('/user/<name>')
+    def user(name):
+        if name =='admin':
+            return redirect(url_for('hello_admin'))
+        else:
+            return redirect(url_for('hello_guest',guest = name))
+
     return app
