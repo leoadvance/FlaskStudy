@@ -38,6 +38,10 @@ def create_app(test_config=None):
         user = {'username': 'LEO'}
         return render_template('index.html', title='Home', user=user)
 
+    @app.route('/blog/<int:postID>')
+    def show_blog(postID):
+        return 'Blog Number %d' % postID
+
     @app.route('/hello')
     def hello():
         return 'Hello, LEO!'
