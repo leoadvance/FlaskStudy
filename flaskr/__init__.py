@@ -13,6 +13,37 @@ from flaskr.logFile import *
 from datetime import datetime
 
 
+def saveGetValueToLog(url):
+    tempMultList = urllib.parse.parse_qsl(urlparse(url).query)
+    values = np.array(tempMultList)
+    # print(b)
+    # print("array.size:", values.size, " array.shape:", values.shape)
+
+    # 遍历数组 并且把二维转成1维
+    listValues = []
+    [rows, cols] = values.shape
+    # print(rows, cols)
+    for i in range(rows):
+        for j in range(cols):
+            # print(a)
+            listValues.append(str(values[i][j]))
+
+    # start = datetime.now()
+    # 声明log 实例
+    logClass = LOGClass(str(listValues[1]))
+
+    # 插入时间数据 年月日 时分秒
+    log_date = datetime.now().strftime("%Y/%m/%d")
+    log_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
+    wrtiteData = log_date + "," + log_time + "," + ','.join(
+        listValues[1:]) + "\n"
+    # print("wrtiteData", wrtiteData)
+
+    # 写log
+    logClass.log_file_write(wrtiteData)
+
+    # print ("listData", listData)
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -46,48 +77,7 @@ def create_app(test_config=None):
             return "CMD POST SUCCESS!"
 
         if request.method == "GET":
-
-            # 获取Http Get参数并转化成dict
-            getMuslDict = request.args
-            getDict = getMuslDict.to_dict()
-            print("getMuslDict", getMuslDict)
-            print("url", request.url)
-            print("getDict", getDict)
-            # dict参数转list
-            listKey   = list(getDict.keys())
-            listValue = list(getDict.values())
-            listData  = list(itertools.chain.from_iterable(zip(listKey,
-                                                              listValue)))
-
-            tempMultList = urllib.parse.parse_qsl(urlparse(request.url).query)
-            values = np.array(tempMultList)
-            # print(b)
-            # print("array.size:", values.size, " array.shape:", values.shape)
-
-            # 遍历数组 并且把二维转成1维
-            listValues = []
-            [rows, cols] = values.shape
-            # print(rows, cols)
-            for i in range(rows):
-                for j in range(cols):
-                    # print(a)
-                    listValues.append(str(values[i][j]))
-
-            # start = datetime.now()
-            # 声明log 实例
-            logClass = LOGClass(str(listValues[1]))
-
-            # 插入时间数据 年月日 时分秒
-            log_date = datetime.now().strftime("%Y/%m/%d")
-            log_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
-            wrtiteData = log_date + "," + log_time + "," + ','.join(
-                listValues[1:]) + "\n"
-            # print("wrtiteData", wrtiteData)
-
-            # 写log
-            logClass.log_file_write(wrtiteData)
-
-            # print ("listData", listData)
+            saveGetValueToLog(request.url)
             return "CMD GET SUCCESS!"
 
     @app.route('/index')
