@@ -1,5 +1,5 @@
 # coding=utf-8
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, request
 from flask import render_template
 
 import os
@@ -32,7 +32,15 @@ def create_app(test_config=None):
 
 
     # 绑定函数到url
-    @app.route('/')
+    @app.route('/', methods = ['POST', 'GET'])
+    # 通用get post解析
+    def commonGetPost():
+        if request.method == "POST":
+            return "This is POST CMD!"
+
+        if request.method == "GET":
+            return "This is GET CMD!"
+
     @app.route('/index')
     def index():
         user = {'username': 'LEO'}
