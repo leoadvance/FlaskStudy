@@ -15,7 +15,7 @@ Flask
 
 ### 调用说明
 ```
-python appRun.py
+python3 appRun.py
 ./log文件夹下会以CSV格式保存log
 文件名为对应的设备名称
 ```

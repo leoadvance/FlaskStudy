@@ -1,5 +1,5 @@
 # coding=utf-8
-from flask import Flask, redirect, url_for, request
+from flask import Flask, redirect, url_for, request, make_response,send_from_directory
 from flask import render_template
 from httpGetAnalysis import *
 from datetime import datetime
@@ -58,13 +58,25 @@ def loglist():
     # 列出log下文件列表
     app.config['LOG_PATH'] = os.path.join(app.root_path, LOGClass.logFilePath)
     logFileList = os.listdir(app.config['LOG_PATH'])
-    print("logFileList:", logFileList)
+    # print("logFileList:", logFileList)
     return render_template('logDownload.html', file_list = logFileList)
 
 # log上传
-@app.route("/logDownload/")
+@app.route("/logDownload/", methods = ['GET'])
 def logDownload():
-    return "download"
+
+    # 从字典的value中找到文件名
+    fileName = request.args.to_dict()["name"]
+    # print("fileName:", fileName)
+
+    # 准备文件并下载
+    response = make_response(
+        send_from_directory(LOGClass.logFilePath, fileName.encode('utf-8').decode('utf-8'),
+                            as_attachment=True))
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(
+        fileName.encode().decode('latin-1'))
+    return response
+
 
 # 主函数
 if __name__ == "__main__":
