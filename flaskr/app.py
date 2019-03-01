@@ -2,7 +2,7 @@
 from flask import Flask, redirect, url_for, request
 from flask import render_template
 from httpGetAnalysis import *
-
+from datetime import datetime
 
 
 
@@ -17,8 +17,10 @@ def commonGetPost():
         return "CMD POST SUCCESS!"
 
     if request.method == "GET":
+        # start = datetime.now()
         httpGetAnalysis = HttpGetAnalysisClass()
         if (httpGetAnalysis.saveGetValueToLog(request.url) == True):
+            # print("runTime = ", datetime.now() - start)
             return "CMD GET SUCCESS!"
         else:
             return "ERROR CMD FORMATE!"
@@ -54,4 +56,4 @@ def user(name):
 
 # 主函数
 if __name__ == "__main__":
-    app.run(host = "0.0.0.0", port = "2222", debug = True)
+    app.run(host = "0.0.0.0", port = "80", debug = True)

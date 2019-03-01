@@ -11,6 +11,7 @@ class LOGClass():
     def __init__(self, fileName:str):
         # print("__init__", self)
         self.fileHandle = self.log_file_open(fileName)
+        # print("logFilePWD:", os.path.abspath(__file__))
 
     def __del__(self):
         # print("__del__", self)
