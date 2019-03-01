@@ -2,7 +2,7 @@
 
 import os
 # log目录名称
-DIR_NAME = "./Log"
+DIR_NAME = "../Log"
 
 class LOGClass():
 
