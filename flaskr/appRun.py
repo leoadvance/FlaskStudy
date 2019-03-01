@@ -53,25 +53,19 @@ def user(name):
         return redirect(url_for('hello_admin'))
     else:
         return redirect(url_for('hello_guest',guest = name))
-@app.route("/download")
-def download():
+@app.route("/log")
+def loglist():
+    # 列出log下文件列表
+    app.config['LOG_PATH'] = os.path.join(app.root_path, LOGClass.logFilePath)
+    logFileList = os.listdir(app.config['LOG_PATH'])
+    print("logFileList:", logFileList)
+    return render_template('logDownload.html', file_list = logFileList)
 
-    html = '''
-    <html lang="en">
-    <head>
-    <meta charset="UTF-8">
-    <title>Download</title>
-    </head>
-    <body>
-    <h3>可下载文件列表</h3>
-    <ul>
-    {% for file in file_list %}
-    <li><a href="{{ url_for('downloading',filename= file) }}" methods="GET">{{ file }}</a></li>
-    {% endfor %}
-    </ul>
-    </body>
-    </html>
-    '''
+# log上传
+@app.route("/logDownload/")
+def logDownload():
+    return "download"
+
 # 主函数
 if __name__ == "__main__":
     app.run(host = "0.0.0.0", port = "80", debug = True)

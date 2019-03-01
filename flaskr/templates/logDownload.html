@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Download</title>
+    </head>
+    <body>
+        <h3>File List</h3>
+        <ul>
+        {% for file in file_list %}
+        <li>
+            <a href="{{ url_for('logDownload', name=file) }}"
+               methods="GET">{{ file }}
+            </a>
+        </li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>

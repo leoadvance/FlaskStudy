@@ -6,7 +6,8 @@ DIR_NAME = "../Log"
 
 class LOGClass():
 
-    fileHandle = None
+    fileHandle  = None
+    logFilePath = DIR_NAME
 
     def __init__(self, fileName:str):
         # print("__init__", self)
