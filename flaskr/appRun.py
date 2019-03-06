@@ -3,8 +3,13 @@ from flask import Flask, redirect, url_for, request, make_response,send_from_dir
 from flask import render_template
 from httpGetAnalysis import *
 from datetime import datetime
+import threading
+import time
 
 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 
@@ -54,6 +59,7 @@ def user(name):
         return redirect(url_for('hello_admin'))
     else:
         return redirect(url_for('hello_guest',guest = name))
+
 @app.route("/log")
 def loglist():
     # 列出log下文件列表
@@ -78,7 +84,22 @@ def logDownload():
         fileName.encode().decode('latin-1'))
     return response
 
+@app.route("/logrm/<fileName>",  methods = ['GET'])
+def logRemove(fileName):
+
+    return "The %s logfile was deleted successfully!" %fileName
+
+def serverRunInfo():
+    count = 0
+    while True:
+        print('\x1b[2K\r')
+        time.sleep(1)
+        count += 1
+        print("服务器运行时间",count, end="", flush=True)
 
 # 主函数
 if __name__ == "__main__":
+    # thread1 = threading.Thread(target=serverRunInfo())
+    # thread1.start()
+    print("服务器运启动")
     app.run(host = "0.0.0.0", port = "80", debug = True)
