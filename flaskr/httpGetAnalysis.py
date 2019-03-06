@@ -42,10 +42,10 @@ class HttpGetAnalysisClass():
             logClass = LOGClass(str(listValues[1]))
 
             # 插入时间数据 年月日 时分秒
-            timenow = datetime.now()
-            logDate = timenow.strftime("%Y/%m/%d")
-            logTime = timenow.strftime("%H:%M:%S")
-            logTimems = timenow.strftime("%f")[:-3]
+            timeNow = datetime.now()
+            logDate = timeNow.strftime("%Y/%m/%d")
+            logTime = timeNow.strftime("%H:%M:%S")
+            logTimems = timeNow.strftime("%f")[:-3]
             wrtiteData = logDate + "," + logTime + "," + logTimems + ","  + ','.join(
                 listValues[1:]) + "\n"
             # print("wrtiteData", wrtiteData)

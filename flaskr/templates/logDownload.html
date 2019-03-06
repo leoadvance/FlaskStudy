@@ -5,15 +5,18 @@
         <title>Download</title>
     </head>
     <body>
-        <h3>File List</h3>
+        <h2>File List</h2>
+        <!--无序列表-->
         <ul>
-        {% for file in file_list %}
-        <li>
-            <a href="{{ url_for('logDownload', name=file) }}"
-               methods="GET">{{ file }}
-            </a>
-        </li>
-        {% endfor %}
+            {% for file in file_list %}
+            <!--无序列表 "."-->
+            <li>
+                <!--超链接-->
+                <a href="{{ url_for('logDownload', name=file) }}"
+                   methods="GET">{{ file }}
+                </a>
+            </li>
+            {% endfor %}
         </ul>
     </body>
 </html>
