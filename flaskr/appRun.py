@@ -29,6 +29,7 @@ def commonGetPost():
 def index():
     user = {'username': 'LEO'}
     return render_template('index.html', title='Home', user=user)
+
 # 限定只能是int型
 @app.route('/blog/<int:postID>')
 def show_blog(postID):
