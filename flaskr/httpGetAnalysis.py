@@ -18,7 +18,7 @@ class HttpGetAnalysisClass():
         # print("__del__", self)
         pass
 
-    def saveGetValueToLog(self, url:str):
+    def saveGetValueToLog(self, url:str) -> bool:
         # 分解url参数到list
         tempMultList = urllib.parse.parse_qsl(urlparse(url).query)
         npArray = np.array(tempMultList)
