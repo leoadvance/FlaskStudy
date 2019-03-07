@@ -6,10 +6,10 @@ from datetime import datetime
 import threading
 import time
 
-
-import logging
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+#
+# import logging
+# log = logging.getLogger('werkzeug')
+# log.setLevel(logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -84,8 +84,8 @@ def logDownload():
         fileName.encode().decode('latin-1'))
     return response
 
-@app.route("/logrm/<fileName>",  methods = ['GET'])
-def logRemove(fileName):
+@app.route("/logrm/<string:fileName>",  methods = ['GET'])
+def logRemove(fileName:str):
 
     return "The %s logfile was deleted successfully!" %fileName
 
