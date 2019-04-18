@@ -11,14 +11,20 @@ class HttpGetAnalysisClass():
     fileHandle = None
 
     def __init__(self):
-        # print("__init__", self)
+        print("__init__ HttpGetAnalysisClass()", self)
         pass
 
     def __del__(self):
-        # print("__del__", self)
+        print("__del__ HttpGetAnalysisClass()", self)
         pass
-
-    def saveGetValueToLog(self, url:str) -> bool:
+    # 直接声明类方法
+    @classmethod
+    def saveGetValueToLog(cls, url:str) -> bool:
+        """
+        分析url 并保存到log
+        :param url:
+        :return:
+        """
         # 分解url参数到list
         tempMultList = urllib.parse.parse_qsl(urlparse(url).query)
         npArray = np.array(tempMultList)

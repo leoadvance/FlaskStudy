@@ -23,8 +23,7 @@ def commonGetPost():
 
     if request.method == "GET":
         # start = datetime.now()
-        httpGetAnalysis = HttpGetAnalysisClass()
-        if (httpGetAnalysis.saveGetValueToLog(request.url) == True):
+        if (HttpGetAnalysisClass.saveGetValueToLog(request.url) == True):
             # print("runTime = ", datetime.now() - start)
             return "CMD GET SUCCESS!"
         else:
@@ -102,4 +101,5 @@ if __name__ == "__main__":
     # thread1 = threading.Thread(target=serverRunInfo())
     # thread1.start()
     print("服务器运启动")
+    # app.httpGetAnalysis = HttpGetAnalysisClass()
     app.run(host = "0.0.0.0", port = "80", debug = True)
