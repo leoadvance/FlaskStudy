@@ -96,10 +96,11 @@ def serverRunInfo():
         count += 1
         print("服务器运行时间",count, end="", flush=True)
 
+
 # 主函数
 if __name__ == "__main__":
     # thread1 = threading.Thread(target=serverRunInfo())
     # thread1.start()
     print("服务器运启动")
-    # app.httpGetAnalysis = HttpGetAnalysisClass()
+    LOGClass.creatLogDir()
     app.run(host = "0.0.0.0", port = "80", debug = True)

@@ -44,8 +44,6 @@ class HttpGetAnalysisClass():
                     listValues.append(str(npArray[i][j]))
 
             # start = datetime.now()
-            # 声明log 实例
-            logClass = LOGClass(str(listValues[1]))
 
             # 插入时间数据 年月日 时分秒
             timeNow = datetime.now()
@@ -57,7 +55,7 @@ class HttpGetAnalysisClass():
             # print("wrtiteData", wrtiteData)
 
             # 写log
-            logClass.log_file_write(wrtiteData)
+            LOGClass.log_file_write(str(listValues[1]), wrtiteData)
 
             # print ("listData", listData)
             return True
