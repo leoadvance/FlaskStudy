@@ -6,10 +6,6 @@ from datetime import datetime
 import threading
 import time
 
-#
-# import logging
-# log = logging.getLogger('werkzeug')
-# log.setLevel(logging.DEBUG)
 
 app = Flask(__name__)
 
