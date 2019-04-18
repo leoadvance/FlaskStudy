@@ -28,5 +28,6 @@ python3 appRun.py
 ```
 浏览器访问http://xx.xx.xx.xx/log 获取文件列表 
 点击文件完成log下载
+下载完成后服务器上文件会自动删除
 
 ```
