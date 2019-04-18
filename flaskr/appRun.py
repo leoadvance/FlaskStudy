@@ -1,6 +1,6 @@
 # coding=utf-8
 from flask import Flask, redirect, url_for, request, make_response,send_from_directory
-from flask import render_template
+from flask import render_template, after_this_request
 from httpGetAnalysis import *
 from datetime import datetime
 import threading
@@ -66,17 +66,17 @@ def loglist():
 # log上传
 @app.route("/logDownload/", methods = ['GET'])
 def logDownload():
-
     # 从字典的value中找到文件名
     fileName = request.args.to_dict()["name"]
-    # print("fileName:", fileName)
 
     # 准备文件并下载
-    response = make_response(
-        send_from_directory(LOGClass.logFilePath, fileName.encode('utf-8').decode('utf-8'),
-                            as_attachment=True))
-    response.headers["Content-Disposition"] = "attachment; filename={}".format(
-        fileName.encode().decode('latin-1'))
+    response = make_response(send_from_directory(LOGClass.getLogDir(), fileName.encode('utf-8').decode('utf-8'),
+                                                 as_attachment=True))
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(fileName.encode().decode('latin-1'))
+
+    # 下载后删除文件
+    os.remove(LOGClass.getLogDir() + "/" +fileName)
+
     return response
 
 @app.route("/logrm/<string:fileName>",  methods = ['GET'])

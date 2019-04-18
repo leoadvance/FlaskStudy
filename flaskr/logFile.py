@@ -16,6 +16,11 @@ class LOGClass():
     def __del__(self):
         print("__del__ LOGClass", self)
         pass
+        # 类方法
+
+    @classmethod
+    def getLogDir(cls):
+        return DIR_NAME
 
     # 类方法
     @classmethod
