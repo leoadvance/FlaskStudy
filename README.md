@@ -31,3 +31,8 @@ python3 appRun.py
 下载完成后服务器上文件会自动删除
 
 ```
+
+### 打包
+```
+pyinstaller --clean --icon=software.ico -F -n=HTTP appRun.py 
+```

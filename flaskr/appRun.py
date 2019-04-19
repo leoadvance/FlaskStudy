@@ -5,7 +5,15 @@ from httpGetAnalysis import *
 from datetime import datetime
 import threading
 import time
+import sys
+import console
 
+
+logCount = 0
+import logging
+# 控制台只显示ERROR级别的信息
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 
@@ -14,11 +22,13 @@ app = Flask(__name__)
 # 通用get post解析
 def commonGetPost():
     if request.method == "POST":
-        print(request.args)
+        # print(request.args)
         return "CMD POST SUCCESS!"
 
     if request.method == "GET":
         # start = datetime.now()
+        global logCount
+        logCount += 1
         if (HttpGetAnalysisClass.saveGetValueToLog(request.url) == True):
             # print("runTime = ", datetime.now() - start)
             return "CMD GET SUCCESS!"
@@ -79,24 +89,31 @@ def logDownload():
 
     return response
 
-@app.route("/logrm/<string:fileName>",  methods = ['GET'])
-def logRemove(fileName:str):
-
-    return "The %s logfile was deleted successfully!" %fileName
+# @app.route("/logrm/<string:fileName>",  methods = ['GET'])
+# def logRemove(fileName:str):
+#
+#     return "The %s logfile was deleted successfully!" %fileName
 
 def serverRunInfo():
+    global logCount
     count = 0
+    print("serverRunInfo")
     while True:
-        print('\x1b[2K\r')
+        # 原地打印信息
+        print("服务器运行时间：",count,"s", " 接受到HTTP请求：",logCount ,"条", end="\r", flush=True)
         time.sleep(1)
         count += 1
-        print("服务器运行时间",count, end="", flush=True)
-
 
 # 主函数
 if __name__ == "__main__":
-    # thread1 = threading.Thread(target=serverRunInfo())
-    # thread1.start()
     print("服务器运启动")
+    thread1 = threading.Thread(target=serverRunInfo)
+
+    thread1.start()
+
     LOGClass.creatLogDir()
-    app.run(host = "0.0.0.0", port = "80", debug = True)
+    app.run(host = "0.0.0.0", port = "80", debug = False, threaded=True)
+
+
+
+
