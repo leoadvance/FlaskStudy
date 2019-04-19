@@ -5,15 +5,14 @@ from httpGetAnalysis import *
 from datetime import datetime
 import threading
 import time
-import sys
-import console
-
+import socket
+import shutil
 
 logCount = 0
 import logging
 # 控制台只显示ERROR级别的信息
 log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+log.setLevel(logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -79,13 +78,16 @@ def logDownload():
     # 从字典的value中找到文件名
     fileName = request.args.to_dict()["name"]
 
+    # 重命名 删除原始文件 让用户下载重命名后文件
+    temp = fileName.split(".")
+    fileNameCopy = temp[0]+"_Bak."+temp[1]
+    if os.path.exists(LOGClass.getLogDir() + "/" + fileNameCopy) == True:
+        os.remove(LOGClass.getLogDir() + "/" + fileNameCopy)
+    os.rename(LOGClass.getLogDir() + "/" + fileName, LOGClass.getLogDir() + "/" + fileNameCopy)
     # 准备文件并下载
-    response = make_response(send_from_directory(LOGClass.getLogDir(), fileName.encode('utf-8').decode('utf-8'),
+    response = make_response(send_from_directory(LOGClass.getLogDir(), fileNameCopy.encode('utf-8').decode('utf-8'),
                                                  as_attachment=True))
-    response.headers["Content-Disposition"] = "attachment; filename={}".format(fileName.encode().decode('latin-1'))
-
-    # 下载后删除文件
-    os.remove(LOGClass.getLogDir() + "/" +fileName)
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(fileNameCopy.encode().decode('latin-1'))
 
     return response
 
@@ -97,22 +99,37 @@ def logDownload():
 def serverRunInfo():
     global logCount
     count = 0
-    print("serverRunInfo")
     while True:
         # 原地打印信息
-        print("服务器运行时间：",count,"s", " 接受到HTTP请求：",logCount ,"条", end="\r", flush=True)
+        print("服务器运行时间：",count,"s", " 每秒接收到HTTP请求：",logCount ,"条", end="\r", flush=True)
+        logCount = 0
         time.sleep(1)
         count += 1
+def get_host_ip():
+    """
+    查询本机ip地址
+    :return: ip
+    """
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+
+    return ip
 
 # 主函数
 if __name__ == "__main__":
-    print("服务器运启动")
-    thread1 = threading.Thread(target=serverRunInfo)
-
-    thread1.start()
+    print("服务器运启动: ")
+    ip = get_host_ip()
+    print("IP:", ip, "Port: 80")
+    # thread1 = threading.Thread(target=serverRunInfo)
+    #
+    # thread1.start()
 
     LOGClass.creatLogDir()
-    app.run(host = "0.0.0.0", port = "80", debug = False, threaded=True)
+    app.run(host = "0.0.0.0", port = "80", debug = True)
 
 
 
