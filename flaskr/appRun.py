@@ -68,7 +68,19 @@ def user(name):
 def loglist():
     # 列出log下文件列表
     app.config['LOG_PATH'] = os.path.join(app.root_path, LOGClass.logFilePath)
-    logFileList = os.listdir(app.config['LOG_PATH'])
+    tempFileList = os.listdir(app.config['LOG_PATH'])
+
+    # 过滤文件 只显示xx.csv
+    logFileList = []
+    for data in tempFileList:
+        # 提取文件名和后缀
+        templist = os.path.splitext(data)
+        # 找出CSV文件
+        if templist[-1] == ".csv":
+            # 非备份文件
+            if templist[0][-4:] != "_Bak":
+                logFileList.append(data)
+
     # print("logFileList:", logFileList)
     return render_template('logDownload.html', file_list = logFileList)
 
@@ -105,10 +117,10 @@ def serverRunInfo():
         logCount = 0
         time.sleep(1)
         count += 1
-def get_host_ip():
+def get_host_ip()->str:
     """
     查询本机ip地址
-    :return: ip
+    :return:        ip str
     """
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
